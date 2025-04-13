@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from quart import Quart, render_template, request, jsonify
 import os
 import json
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 # Global variables to store puzzle state
 puzzle_state = {
@@ -19,14 +19,15 @@ puzzle_state = {
 }
 
 @app.route("/")
-def index():
+async def index():
     """Render the main page"""
-    return render_template("index.html", puzzle_state=puzzle_state)
+    return await render_template("index.html", puzzle_state=puzzle_state)
 
 @app.route("/setup", methods=["POST"])
-def setup_puzzle():
+async def setup_puzzle():
     """Setup the puzzle with words from a text file (WEB01, WEB01a)"""
-    file_path = request.form.get("puzzle_file", "")
+    form = await request.form
+    file_path = form.get("puzzle_file", "")
     
     if not os.path.exists(file_path):
         return jsonify({"error": "File not found"}), 404
@@ -46,7 +47,7 @@ def setup_puzzle():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/recommend", methods=["GET"])
-def get_recommendation():
+async def get_recommendation():
     """Get the next recommendation (WEB03)"""
     # In a real implementation, this would call the AI recommender
     # For now, just use a placeholder
@@ -60,9 +61,9 @@ def get_recommendation():
     })
 
 @app.route("/feedback", methods=["POST"])
-def process_feedback():
+async def process_feedback():
     """Process feedback on the recommended group (WEB04)"""
-    data = request.json
+    data = await request.get_json()
     color = data.get("color", "")
     response = data.get("response", "")
     group = data.get("group", [])
@@ -95,9 +96,9 @@ def process_feedback():
     })
 
 @app.route("/override", methods=["POST"])
-def manual_override():
+async def manual_override():
     """Process manual override of recommendation (WEB05)"""
-    data = request.json
+    data = await request.get_json()
     group = data.get("group", [])
     reason = data.get("reason", "")
     
@@ -108,7 +109,7 @@ def manual_override():
     })
 
 @app.route("/terminate", methods=["POST"])
-def terminate():
+async def terminate():
     """Terminate the puzzle-solving process (WEB08)"""
     # In a real implementation, this would properly shut down the app
     # For demo purposes, we'll just update the status
@@ -119,4 +120,4 @@ def terminate():
     })
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=True, port=5000, host="0.0.0.0")
