@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYT Connection Puzzle Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>NYT Connection Puzzle Solver</h1>
+        
+        <!-- Setup Section (WEB01, WEB01a) -->
+        <div class="section setup-section">
+            <h2>Setup</h2>
+            <div class="input-group">
+                <label for="puzzle-file">Puzzle File:</label>
+                <input type="text" id="puzzle-file" placeholder="Enter the path to your puzzle file">
+                <button id="setup-puzzle-btn">Setup Puzzle</button>
+            </div>
+        </div>
+        
+        <!-- Puzzle Section -->
+        <div class="section puzzle-section">
+            <h2>Puzzle</h2>
+            
+            <!-- Status Row (WEB06, WEB08) -->
+            <div class="status-row">
+                <div class="status-group">
+                    <label for="status">Status:</label>
+                    <textarea id="status" readonly>{{ puzzle_state.status }}</textarea>
+                </div>
+                <div class="status-group">
+                    <label for="recommender">Recommender:</label>
+                    <textarea id="recommender" readonly>{{ puzzle_state.active_recommender }}</textarea>
+                </div>
+                <button id="terminate-btn">Terminate</button>
+            </div>
+            
+            <!-- Remaining Words (WEB02) -->
+            <div class="words-section">
+                <label for="remaining-words">Remaining Words:</label>
+                <textarea id="remaining-words" readonly>{{ ", ".join(puzzle_state.remaining_words) }}</textarea>
+            </div>
+            
+            <!-- Controls (WEB03) -->
+            <div class="controls-section">
+                <button id="get-recommendation-btn">Get Next Recommendation</button>
+            </div>
+            
+            <!-- Recommendation Display -->
+            <div class="recommendation-section">
+                <div class="group">
+                    <label for="recommended-group">Recommended Group:</label>
+                    <textarea id="recommended-group" readonly></textarea>
+                </div>
+                <div class="group">
+                    <label for="connection-reason">Connection Reason:</label>
+                    <textarea id="connection-reason" readonly></textarea>
+                </div>
+            </div>
+            
+            <!-- Feedback Section (WEB04) -->
+            <div class="feedback-section">
+                <div class="feedback-group">
+                    <h3>Correct Group Color</h3>
+                    <div class="button-group">
+                        <button class="color-btn yellow" data-color="yellow">Yellow</button>
+                        <button class="color-btn green" data-color="green">Green</button>
+                        <button class="color-btn blue" data-color="blue">Blue</button>
+                        <button class="color-btn purple" data-color="purple">Purple</button>
+                    </div>
+                </div>
+                <div class="feedback-group">
+                    <h3>Puzzle Response</h3>
+                    <div class="button-group">
+                        <button class="response-btn" data-response="one-away">One-away Error</button>
+                        <button class="response-btn" data-response="not-correct">Not Correct</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Manual Override Section (WEB05) -->
+            <div class="override-section">
+                <h3>Adjust Recommendation</h3>
+                <button id="manual-override-btn">Manual Override</button>
+                <button id="confirm-override-btn" style="display:none;">Confirm Manual Override</button>
+            </div>
+        </div>
+        
+        <!-- Results Section (WEB07) -->
+        <div class="section results-section">
+            <h2>Results</h2>
+            <div class="results-group">
+                <label for="correct-groups">Correct Groups:</label>
+                <textarea id="correct-groups" readonly></textarea>
+            </div>
+            <div class="results-group">
+                <label for="invalid-groups">Invalid Groups:</label>
+                <textarea id="invalid-groups" readonly></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

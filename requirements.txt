@@ -4,4 +4,5 @@ langchain
 langchain-openai
 langgraph
 pytest
-black
+black==25.1.0
+flask==3.1.0
