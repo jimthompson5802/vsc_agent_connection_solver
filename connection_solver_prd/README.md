@@ -5,24 +5,28 @@ The PRDs outline the features, functionality, and design of the connection solve
 
 With the exception of `setup_prd.md`, which was manually created, all other PRDs were created by reverse engineering the existing [Agentic Virtual Agent (AVA) codebase](https://github.com/jimthompson5802/connection_solver).
 
-The workspace was set up with only these contents:
+Before using VSC Agent to generate code from the user stories files, the workspace contained only these files:
 - `.github/` contains `copilot-instructions.md` to instruct GitHub Copilot with coding conventions used in this project.
 - `.vscode/` contains `launch.json` for running and debugging the code in VSCode.
+- `connection_solver_prd/` contains the Product Requirements Documents (PRDs), aka the user stories for the connection solver.
 - `puzzle_data/` contains the puzzle data files.
 - `.env` symbolic link to enviornment variables required for LLM access.
 
 
-|User Story|Run time<br>(mm:ss)|Comments|
+
+|User Story|Time for Agent<br>to Generate Code (mm:ss)|Comments|
 |---|:---:|---|
 |setup_prd.md|01:30|No issues.|
 |web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-convert from Flask to Quart<br>- web ui working with stub code.|
-|workflow_prd.md|11:44|IN PROGRESS<br>-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor|
+|workflow_prd.md|11:44|REFACTOR IN PROGRESS<br>-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor|
 |solver_prd.md||TO DO|
 |tools_prd.md||TO DO|
 |openai_tools_prd.md||TO DO|
 
+**REFACTOR IN PROGRESS**: With the assistance of GHCP refactoring code by hand to correct logic or run-time errors.
 
-## User Story Logs
+
+## Github Copilot Logs for Code Generation
 
 ### User Story: setup_prd.md
 ---
