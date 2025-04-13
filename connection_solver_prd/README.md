@@ -29,7 +29,7 @@ Before using VSC Agent to generate code from the user stories files, the workspa
 ## Github Copilot Logs for Code Generation
 
 ### User Story: setup_prd.md
----
+
 jimthompson5802: setup the environment as described in the attachment user stories.  as you perform the setups, cite the user story id.
 
 GitHub Copilot: I'll help you set up the environment as described in the user stories. Let's work through this step by step.
@@ -111,7 +111,6 @@ To start developing the application, you can now activate the virtual environmen
 
 ### User Story: web_ui_prd.md
 
----
 jimthompson5802: add or modify components as described in the attachment user stories.  as you perform the setups, cite the user story id.
 
 GitHub Copilot: I'll help you create the components described in the web UI PRD user stories. Let's start by setting up a Python project with a web UI based on the user stories.
@@ -239,7 +238,6 @@ To set up and run your converted application, you can follow these steps:
 ---
 
 ### User Story: workflow_prd.md
-
 
 jimthompson5802: add or modify components as described in the attachment user stories.  as you perform the setups, cite the user story id.
 
