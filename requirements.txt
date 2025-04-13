@@ -1,0 +1,7 @@
+quart
+openai
+langchain
+langchain-openai
+langgraph
+pytest
+black

@@ -1,0 +1,15 @@
+# Supporting Tools Product Requirements Document (PRD)
+
+## Overview
+This document outlines the product requirements for supporting tools of an agentic virtual assisstant to assist a human in solving the New York Time Connection Puzzle.  The assisant will be able to read the puzzle, make recommendations, and provide feedback on the recommendations to the human.  The assistant uses generative AI technologies to provide the recommendations modify recommendations based on the feedback.  
+
+
+# User Stories
+
+| User Story ID | Description                                                                 | Acceptance Criteria                                                                                                                                                                                                 |
+|---------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| TOOL001         | As a user, I want to provide a list of words from a file so that I can use them for solving puzzles.             | - The system should read the first line of a file and extract words separated by commas. <br> - If the file is not found, the system should notify the user. <br> - The extracted words should be returned as a list. |
+| TOOL002         | As a user, I want to extract words from an image so that I can use them for solving puzzles.                     | - The system should encode the image in base64 format. <br> - The system should send the encoded image to an LLM for word extraction. <br> - The extracted words should be returned in lowercase.                   |
+| TOOL003         | As a user, I want to choose the source of puzzle words so that I can set up a puzzle manually.                   | - The system should prompt the user to select between a file or an image as the source. <br> - Based on the selection, the system should extract words using the appropriate method.                                 |
+| TOOL004         | As a user, I want to receive recommendations for word groups and provide feedback on them.                      | - The system should display a recommendation message with the suggested words and their connection. <br> - The system should prompt the user for feedback using specific response options (e.g., y/g/b/p/m/s/o/n). |
+| TOOL005         | As a user, I want to check if a generated word group matches any solution so that I can validate the recommendation. | - The system should compare the generated word group with the provided solutions. <br> - If the groups match exactly, the system should return "correct". <br> - If three words overlap, the system should return "o". <br> - Otherwise, the system should return "n". |
