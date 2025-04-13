@@ -28,6 +28,10 @@ Before using VSC Agent to generate code from the user stories files, the workspa
 
 ## Github Copilot Logs for Code Generation
 
+VSC Agent used `claude 3.7 sonnet` LLM for code generation.
+
+---
+
 ### User Story: setup_prd.md
 
 jimthompson5802: setup the environment as described in the attachment user stories.  as you perform the setups, cite the user story id.
