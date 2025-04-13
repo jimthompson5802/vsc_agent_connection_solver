@@ -1,6 +1,7 @@
 from quart import Quart, render_template, request, jsonify
 import os
 import json
+import workflow_manager as wm  # Import the workflow manager
 
 app = Quart(__name__)
 
@@ -39,6 +40,17 @@ async def setup_puzzle():
             words = [word.strip().lower() for word in content.split(",")]
             puzzle_state["remaining_words"] = words
             puzzle_state["status"] = "Puzzle loaded"
+            
+            # Initialize the workflow with the loaded puzzle (US001)
+            workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
+            workflow_state["tool_to_use"] = "setup_puzzle"
+            
+            # Run the setup_puzzle function directly
+            result_state = await wm.setup_puzzle(workflow_state)
+            
+            # Update the puzzle state with the result
+            wm.update_puzzle_state_from_workflow(puzzle_state, result_state)
+            
             return jsonify({
                 "remaining_words": puzzle_state["remaining_words"],
                 "status": puzzle_state["status"]
@@ -49,16 +61,29 @@ async def setup_puzzle():
 @app.route("/recommend", methods=["GET"])
 async def get_recommendation():
     """Get the next recommendation (WEB03)"""
-    # In a real implementation, this would call the AI recommender
-    # For now, just use a placeholder
-    recommended_group = puzzle_state["remaining_words"][:4] if len(puzzle_state["remaining_words"]) >= 4 else []
-    connection_reason = "These words appear to be related (placeholder recommendation)"
-    
-    return jsonify({
-        "recommended_group": recommended_group,
-        "connection_reason": connection_reason,
-        "recommender": puzzle_state["active_recommender"]
-    })
+    try:
+        # Get recommendation using the workflow manager (US003, US005)
+        recommendation = await wm.get_recommendation_from_workflow(puzzle_state)
+        
+        # Extract the recommendation details
+        recommended_group = recommendation.get("group", [])
+        connection_reason = recommendation.get("reason", "")
+        source = recommendation.get("source", "unknown")
+        
+        # Update the active recommender in the puzzle state
+        puzzle_state["active_recommender"] = source
+        
+        return jsonify({
+            "recommended_group": recommended_group,
+            "connection_reason": connection_reason,
+            "recommender": puzzle_state["active_recommender"]
+        })
+    except Exception as e:
+        return jsonify({
+            "recommended_group": [],
+            "connection_reason": f"Error generating recommendation: {str(e)}",
+            "recommender": "error"
+        })
 
 @app.route("/feedback", methods=["POST"])
 async def process_feedback():
@@ -67,6 +92,9 @@ async def process_feedback():
     color = data.get("color", "")
     response = data.get("response", "")
     group = data.get("group", [])
+    
+    # Initialize workflow state from current puzzle state
+    workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
     
     if color in ["yellow", "green", "blue", "purple"]:
         # Handle correct group
@@ -78,13 +106,44 @@ async def process_feedback():
         for word in group:
             if word in puzzle_state["remaining_words"]:
                 puzzle_state["remaining_words"].remove(word)
-    elif response == "one-away" or response == "not-correct":
+                
+        # Update workflow state
+        workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
+        workflow_state["puzzle_status"] = "continue"
+        
+    elif response == "one-away":
+        # Handle one-away error
+        puzzle_state["invalid_groups"].append({
+            "words": group,
+            "reason": data.get("reason", ""),
+            "error_type": "one-away"
+        })
+        
+        # Trigger one-away analysis in workflow
+        one_away_result = await wm.analyze_one_away(puzzle_state)
+        
+        # If we got a recommendation, update the puzzle state
+        if one_away_result.get("group"):
+            puzzle_state["active_recommender"] = "one_away_analyzer"
+        
+    elif response == "not-correct":
         # Handle invalid group
         puzzle_state["invalid_groups"].append({
             "words": group,
             "reason": data.get("reason", ""),
-            "error_type": response
+            "error_type": "not-correct"
         })
+        
+        # Update workflow state
+        workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
+        workflow_state["mistake_count"] = workflow_state.get("mistake_count", 0) + 1
+        
+        # Check if we've reached the error limit
+        if workflow_state["mistake_count"] >= wm.MAX_ERRORS:
+            workflow_state["puzzle_status"] = "max_errors"
+    
+    # Apply the workflow state to update the puzzle state
+    wm.update_puzzle_state_from_workflow(puzzle_state, workflow_state)
     
     puzzle_state["status"] = f"Feedback processed: {response if response else color}"
     
@@ -102,6 +161,18 @@ async def manual_override():
     group = data.get("group", [])
     reason = data.get("reason", "")
     
+    # Update the workflow state with the manual recommendation
+    workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
+    workflow_state["recommendations"] = {
+        "group": group,
+        "reason": reason,
+        "source": "manual"
+    }
+    workflow_state["active_recommender"] = "manual"
+    
+    # Apply the workflow state
+    wm.update_puzzle_state_from_workflow(puzzle_state, workflow_state)
+    
     return jsonify({
         "recommended_group": group,
         "connection_reason": reason,
@@ -111,9 +182,14 @@ async def manual_override():
 @app.route("/terminate", methods=["POST"])
 async def terminate():
     """Terminate the puzzle-solving process (WEB08)"""
-    # In a real implementation, this would properly shut down the app
-    # For demo purposes, we'll just update the status
-    puzzle_state["status"] = "Terminated"
+    # Update the workflow state to end
+    workflow_state = wm.initialize_state_from_puzzle_state(puzzle_state)
+    workflow_state["puzzle_status"] = "terminated"
+    workflow_state["tool_to_use"] = "END"
+    
+    # Apply the workflow state
+    wm.update_puzzle_state_from_workflow(puzzle_state, workflow_state)
+    
     return jsonify({
         "status": "Terminated",
         "message": "Puzzle solving terminated"
