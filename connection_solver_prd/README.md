@@ -15,7 +15,7 @@ The workspace was set up with only these contents:
 |User Story|Run time (mm:ss)|Comments|
 |---|:---:|---|
 |setup_prd.md|01:30|No issues.|
-|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-convert from Flask to Quart|
+|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-convert from Flask to Quart<br>- web ui working with stub code.|
 |workflow_prd.md|||
 |solver_prd.md|||
 |tools_prd.md|||
