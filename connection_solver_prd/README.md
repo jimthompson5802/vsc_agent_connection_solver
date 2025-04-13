@@ -12,11 +12,11 @@ The workspace was set up with only these contents:
 - `.env` symbolic link to enviornment variables required for LLM access.
 
 
-|User Story|Run time (mm:ss)|Comments|
+|User Story|Run time<br>(mm:ss)|Comments|
 |---|:---:|---|
 |setup_prd.md|01:30|No issues.|
 |web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-convert from Flask to Quart<br>- web ui working with stub code.|
-|workflow_prd.md|11:44|IN PROGRESS<br>-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.|
+|workflow_prd.md|11:44|IN PROGRESS<br>-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor|
 |solver_prd.md||TO DO|
 |tools_prd.md||TO DO|
 |openai_tools_prd.md||TO DO|
