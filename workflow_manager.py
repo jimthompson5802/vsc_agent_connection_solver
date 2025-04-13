@@ -14,7 +14,7 @@ from typing import Dict, Any, Callable, List, Optional, Tuple
 from langchain_core.messages import HumanMessage
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_openai.embeddings import OpenAIEmbeddings
-from langgraph.checkpoint.memory import MemoryCheckpoint
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph, END
 
 # Configure logging
@@ -583,7 +583,7 @@ def create_workflow_graph() -> StateGraph:
     """
     # Initialize the workflow graph with a memory checkpoint
     workflow = StateGraph(PuzzleState)
-    workflow.set_checkpoint(MemoryCheckpoint())
+    
     
     # Add the planner node that decides the next action
     workflow.add_node("run_planner", run_planner)
@@ -635,7 +635,7 @@ def create_webui_workflow_graph() -> StateGraph:
     """
     # Initialize the workflow graph with a memory checkpoint
     workflow = StateGraph(PuzzleState)
-    workflow.set_checkpoint(MemoryCheckpoint())
+    
     
     # Add the planner node
     workflow.add_node("run_planner", run_planner)
@@ -692,7 +692,7 @@ async def run_workflow(
     logger.info("Starting workflow execution with initial state: %s", initial_state)
     
     # Create a compiled version of the workflow
-    compiled_workflow = workflow_graph.compile()
+    compiled_workflow = workflow_graph.compile(checkpointer=MemorySaver())
     
     try:
         # Execute the workflow asynchronously
@@ -788,7 +788,7 @@ async def get_recommendation_from_workflow(puzzle_state: Dict[str, Any]) -> Dict
         workflow_state["tool_to_use"] = "run_planner"
     
     # Execute the workflow for one step to get a recommendation
-    compiled_workflow = workflow_graph.compile()
+    compiled_workflow = workflow_graph.compile(checkpointer=MemorySaver())
     
     try:
         # Execute the workflow with a limit of 1 step
@@ -824,12 +824,12 @@ async def analyze_one_away(puzzle_state: Dict[str, Any]) -> Dict[str, Any]:
     
     # Create a simplified workflow just for one-away analysis
     workflow = StateGraph(PuzzleState)
-    workflow.set_checkpoint(MemoryCheckpoint())
+    
     workflow.add_node("one_away_analyzer", one_away_analyzer)
     workflow.set_entry_point("one_away_analyzer")
     
     # Execute the workflow
-    compiled_workflow = workflow.compile()
+    compiled_workflow = workflow.compile(checkpointer=MemorySaver())
     
     try:
         # Execute the workflow
