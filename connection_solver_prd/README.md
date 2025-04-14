@@ -25,6 +25,14 @@ Before using VSC Agent to generate code from the user stories files, the workspa
 
 **REFACTOR IN PROGRESS**: With the assistance of GHCP refactoring code by hand to correct logic or run-time errors.
 
+## setup 
+```
+# custom brewarm for M1/M2 macs
+ brewarm install graphviz
+ 
+ # force source code install to build apple silicon version
+ pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-I$(brewarm --prefix graphviz)/include/" --config-settings="--global-option=-L$(brewarm --prefix graphviz)/lib/" --no-binary :all: --force-reinstall --no-cache-dir pygraphviz 
+```
 
 ## Github Copilot Logs for Code Generation
 

@@ -850,3 +850,5 @@ async def analyze_one_away(puzzle_state: Dict[str, Any]) -> Dict[str, Any]:
             "reason": f"Error analyzing one-away error: {str(e)}",
             "source": "error"
         }
+    
+create_webui_workflow_graph().compile().get_graph().draw_png("images/connection_solver_embedvec_graph.png")
