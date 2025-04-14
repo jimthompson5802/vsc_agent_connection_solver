@@ -16,8 +16,8 @@ Before using VSC Agent to generate code from the user stories files, the workspa
 
 |User Story|Time for Agent<br>to Generate Code (mm:ss)|Comments|Status|
 |---|:---:|---|-----|
-|setup_prd.md|01:30|No issues.|Complete|
-|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-Agent Refactor from Flask to Quart<br>- web ui working with stub code.|Complete|
+|setup_prd.md|01:30|No issues.|COMPLETE|
+|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-Agent Refactor from Flask to Quart<br>- web ui working with stub code.|COMPLETE|
 |workflow_prd.md|11:44|-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor<br>- pip install of pygraphviz for Apple Silicon|REFECTOR IN PROGRESS|
 |solver_prd.md|||TO DO|
 |tools_prd.md|||TO DO|
