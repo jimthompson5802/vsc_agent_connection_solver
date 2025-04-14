@@ -10,6 +10,7 @@ import asyncio
 import json
 import numpy as np
 from typing import Dict, Any, Callable, List, Optional, Tuple
+import os
 
 from langchain_core.messages import HumanMessage
 from langchain_openai.chat_models import ChatOpenAI
@@ -850,5 +851,8 @@ async def analyze_one_away(puzzle_state: Dict[str, Any]) -> Dict[str, Any]:
             "reason": f"Error analyzing one-away error: {str(e)}",
             "source": "error"
         }
-    
-create_webui_workflow_graph().compile().get_graph().draw_png("images/connection_solver_embedvec_graph.png")
+
+# if image file is not found, create it
+if not os.path.exists("connection_solver_prd/images/connection_solver_graph.png"):
+    # Create the workflow graph and save it as an image    
+    create_webui_workflow_graph().compile().get_graph().draw_png("connection_solver_prd/images/connection_solver_graph.png")
