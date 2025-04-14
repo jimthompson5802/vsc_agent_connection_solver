@@ -852,7 +852,13 @@ async def analyze_one_away(puzzle_state: Dict[str, Any]) -> Dict[str, Any]:
             "source": "error"
         }
 
-# if image file is not found, create it
-if not os.path.exists("connection_solver_prd/images/connection_solver_graph.png"):
-    # Create the workflow graph and save it as an image    
-    create_webui_workflow_graph().compile().get_graph().draw_png("connection_solver_prd/images/connection_solver_graph.png")
+
+if __name__ == "__main__":
+    # if image file is not found, create it
+    if not os.path.exists("connection_solver_prd/images/connection_solver_webui_graph.png"):
+        # Create the workflow graph and save it as an image    
+        create_webui_workflow_graph().compile().get_graph().draw_png("connection_solver_prd/images/connection_solver_webui_graph.png")
+
+    if not os.path.exists("connection_solver_prd/images/connection_solver_graph.png"):
+        # Create the workflow graph and save it as an image    
+        create_workflow_graph().compile().get_graph().draw_png("connection_solver_prd/images/connection_solver_graph.png")

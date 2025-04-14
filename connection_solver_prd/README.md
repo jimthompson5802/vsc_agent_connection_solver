@@ -420,4 +420,12 @@ Now that I've updated the import statement, the application should work correctl
 
 If you're using a newer version of LangGraph, this change should resolve the ImportError and allow your application to run successfully.
 
+#### Workflow Graph Compilation
+
+`conection_solver_graph.png`
+![](images/connection_solver_graph.png)
+
+`connection_solver_webui_graph.png`
+![](images/connection_solver_webui_graph.png)
+
 ---
