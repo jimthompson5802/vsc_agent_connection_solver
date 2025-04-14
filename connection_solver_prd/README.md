@@ -14,27 +14,29 @@ Before using VSC Agent to generate code from the user stories files, the workspa
 
 
 
-|User Story|Time for Agent<br>to Generate Code (mm:ss)|Comments|
-|---|:---:|---|
-|setup_prd.md|01:30|No issues.|
-|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-convert from Flask to Quart<br>- web ui working with stub code.|
-|workflow_prd.md|11:44|REFACTOR IN PROGRESS<br>-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor|
-|solver_prd.md||TO DO|
-|tools_prd.md||TO DO|
-|openai_tools_prd.md||TO DO|
+|User Story|Time for Agent<br>to Generate Code (mm:ss)|Comments|Status|
+|---|:---:|---|-----|
+|setup_prd.md|01:30|No issues.|Complete|
+|web_ui_prd.md|4:45<br>1:44|- use of Flask instead of Quart<br>-Agent Refactor from Flask to Quart<br>- web ui working with stub code.|Complete|
+|workflow_prd.md|11:44|-refactor code to correct import error for MemoryCheckpoint class<br>- refactor workflow compilation code.<br>-creates workflow graph in several locations, need to refactor<br>- pip install of pygraphviz for Apple Silicon|REFECTOR IN PROGRESS|
+|solver_prd.md|||TO DO|
+|tools_prd.md|||TO DO|
+|openai_tools_prd.md|||TO DO|
 
 **REFACTOR IN PROGRESS**: With the assistance of GHCP refactoring code by hand to correct logic or run-time errors.
 
 ## setup 
 ```
 # custom brewarm for M1/M2 macs
- brewarm install graphviz
+brewarm install graphviz
  
- # force source code install to build apple silicon version
- pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-I$(brewarm --prefix graphviz)/include/" --config-settings="--global-option=-L$(brewarm --prefix graphviz)/lib/" --no-binary :all: --force-reinstall --no-cache-dir pygraphviz 
+# force source code install to build apple silicon version
+pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-I$(brewarm --prefix graphviz)/include/" --config-settings="--global-option=-L$(brewarm --prefix graphviz)/lib/" --no-binary :all: --force-reinstall --no-cache-dir pygraphviz 
 ```
 
-## Github Copilot Logs for Code Generation
+`brewarm` is an alias for `/opt/homebrew/bin/brew` command installing Apple Silicon homebrew packages.
+
+## Visual Studio Code Agent: Code Generation Dialog with GitHub Copilot
 
 VSC Agent used `claude 3.7 sonnet` LLM for code generation.
 
@@ -247,6 +249,10 @@ I've successfully converted your Flask application to Quart. Here are the key ch
 
 To set up and run your converted application, you can follow these steps:
 
+#### Refactoring Notes
+
+* Used agent to refactor the code to use Quart instead of Flask.
+
 ---
 
 ### User Story: workflow_prd.md
@@ -420,7 +426,9 @@ Now that I've updated the import statement, the application should work correctl
 
 If you're using a newer version of LangGraph, this change should resolve the ImportError and allow your application to run successfully.
 
-#### Workflow Graph Compilation
+#### Code Refactoring Notes:
+
+* After correcting for deprecated (incorrect) and manually installing Apple Silicon version of `pygraphviz` installed, able to display Agent generated workflow graph.
 
 `conection_solver_graph.png`
 ![](images/connection_solver_graph.png)
