@@ -40,7 +40,9 @@ pip install --config-settings="--global-option=build_ext" --config-settings="--g
 
 setup a MCP server for `sqlite` database.
 
-Since the dataase is only ephemeral, it is not necessary to persist the database across runs. The MCP server will be run in a docker container with the database stored in `/tmp` directory.
+Since the dataase is only ephemeral, it is not necessary to persist the database across runs. The MCP server will be run in a docker container with the database stored in `/tmp` directory.  
+
+VSCode settings for the MCP server are stored in `.vscode/mcp.json` file.
 ```json
 {
     "servers": {
