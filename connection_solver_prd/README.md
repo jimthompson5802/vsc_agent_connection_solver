@@ -36,11 +36,15 @@ pip install --config-settings="--global-option=build_ext" --config-settings="--g
 
 `brewarm` is an alias for `/opt/homebrew/bin/brew` command installing Apple Silicon homebrew packages.
 
+## sqlite MCP server
+
 setup a MCP server for `sqlite` database.
+
 Since the dataase is only ephemeral, it is not necessary to persist the database across runs. The MCP server will be run in a docker container with the database stored in `/tmp` directory.
 ```json
 {
     "servers": {
+
         "sqlite": {
             "command": "docker",
             "args": [
@@ -57,6 +61,11 @@ Since the dataase is only ephemeral, it is not necessary to persist the database
     }
 }
 ```
+
+**Example of using the `sqlite` MCP server with GHCP**:
+
+![](images/mcp_sqlite_tool_example.png)
+
 
 ## Visual Studio Code Agent: Code Generation Dialog with GitHub Copilot
 
